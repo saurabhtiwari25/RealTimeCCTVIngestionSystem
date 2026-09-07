@@ -1,6 +1,6 @@
 # Argus Eye: Real-Time IP Surveillance Video Streaming Platform
 
-A lightweight, robust, and production-structured MVP for real-time surveillance/IP camera ingestion, multi-camera live grid monitoring, health tracking with automatic reconnection, and on-demand stream recording.
+A lightweight, robust, and production-structured MVP for real-time CCTV surveillance/IP camera ingestion, multi-camera live grid monitoring, health tracking with automatic reconnection, and on-demand stream recording.
 
 Built with **Python 3.11+**, **Streamlit**, **MediaMTX**, **FFmpeg**, and **PostgreSQL**.
 
@@ -8,10 +8,10 @@ Built with **Python 3.11+**, **Streamlit**, **MediaMTX**, **FFmpeg**, and **Post
 
 ## 1. Project Overview
 
-Surveillance cameras broadcast video over RTSP (Real-Time Streaming Protocol). Because modern web browsers do not natively support RTSP, streaming IP cameras directly to web applications typically requires either heavy, latency-inducing transcoding or proprietary browser plugins.
+Surveillance cameras broadcast CCTV video over RTSP (Real-Time Streaming Protocol). Because modern web browsers do not natively support RTSP, streaming IP cameras directly to web applications typically requires either heavy, latency-inducing transcoding or proprietary browser plugins.
 
 **Argus Eye** bridges this gap:
-1. It ingests H.264/H.265 RTSP feeds via **MediaMTX**.
+1. It ingests H.264/H.265 CCTV RTSP feeds via **MediaMTX**.
 2. Remuxes them on-the-fly into browser-compatible **WebRTC** (ultra-low latency: ~200-400ms) and **HLS** (maximum compatibility fallback).
 3. Embeds live feeds directly in a modern **Streamlit** dashboard.
 4. Manages camera metadata and status persistently in **PostgreSQL**.

@@ -1,0 +1,61 @@
+###############################################
+# MediaMTX Configuration for Surveillance MVP #
+###############################################
+
+# General
+logLevel: info
+logDestinations: [stdout]
+
+# API (for dynamic path registration by Streamlit stream service)
+api: yes
+apiAddress: :9997
+
+# Authentication (allow internal and localhost access to API)
+authMethod: internal
+authInternalUsers:
+  - user: any
+    pass: ""
+    ips: []
+    permissions:
+      - action: api
+      - action: read
+      - action: publish
+
+# Metrics
+metrics: no
+
+# RTSP Server
+rtsp: yes
+rtspDisable: no
+protocols: [tcp, udp]
+rtspAddress: :8554
+rtspsAddress: :8322
+rtpAddress: :8000
+rtcpAddress: :8001
+
+# WebRTC Server (low-latency browser streaming via WHEP)
+webrtc: yes
+webrtcDisable: no
+webrtcAddress: :8889
+webrtcEncryption: no
+webrtcLocalUDPAddress: :8189
+webrtcIPsFromInterfaces: yes
+webrtcHandshakeTimeout: 10s
+
+# HLS Server (fallback browser streaming)
+hls: yes
+hlsDisable: no
+hlsAddress: :8888
+hlsAlwaysRemux: yes
+hlsVariant: fmp4
+hlsSegmentCount: 5
+hlsSegmentDuration: 1s
+hlsPartDuration: 200ms
+
+# RTMP Server (disabled or optional)
+rtmp: no
+
+# Paths configuration
+# "all_others" allows dynamic stream registration via REST API or RTSP publish
+paths:
+  all_others:

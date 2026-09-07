@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+.venv/
+venv/
+ENV/
+
+# Environment and Secrets
+.env
+*.pem
+*.key
+
+# Application Data & Recordings
+recordings/*
+!recordings/.gitkeep
+*.mp4
+sample_videos/*.mp4
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Test & Coverage
+.pytest_cache/
+.coverage
+htmlcov/

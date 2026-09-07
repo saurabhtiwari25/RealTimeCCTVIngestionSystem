@@ -1,0 +1,87 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: surveillance_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-camera_stream_db}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-camera_stream_db}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  mediamtx:
+    image: bluenviron/mediamtx:latest
+    container_name: surveillance_mediamtx
+    restart: unless-stopped
+    ports:
+      - "8554:8554/tcp"  # RTSP TCP
+      - "8554:8554/udp"  # RTSP UDP
+      - "8889:8889"      # WebRTC HTTP / WHEP
+      - "8189:8189/udp"  # WebRTC ICE
+      - "8888:8888"      # HLS HTTP
+      - "9997:9997"      # MediaMTX REST API
+    volumes:
+      - ./streaming/mediamtx.yml:/mediamtx.yml:ro
+
+  streamlit:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: surveillance_streamlit
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+      mediamtx:
+        condition: service_started
+    ports:
+      - "8501:8501"
+    environment:
+      - DATABASE_URL=postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-camera_stream_db}
+      - MEDIAMTX_HOST=localhost
+      - MEDIAMTX_API_URL=http://mediamtx:9997
+      - MEDIAMTX_RTSP_PORT=8554
+      - MEDIAMTX_WEBRTC_PORT=8889
+      - MEDIAMTX_HLS_PORT=8888
+      - RECORDINGS_DIR=/app/recordings
+    command: ["streamlit", "run", "app/streamlit_app.py", "--server.port=8501", "--server.address=0.0.0.0", "--server.fileWatcherType=none"]
+    volumes:
+      - ./recordings:/app/recordings
+      - ./app:/app/app
+      - ./.streamlit:/app/.streamlit:ro
+      - ./sample_videos:/app/sample_videos
+      - ./streaming:/app/streaming
+      - ./tests:/app/tests
+
+  simulator:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: surveillance_simulator
+    restart: unless-stopped
+    depends_on:
+      mediamtx:
+        condition: service_started
+    environment:
+      - MEDIAMTX_RTSP_BASE=rtsp://mediamtx:8554
+    command: ["python", "streaming/simulator.py"]
+    volumes:
+      - ./sample_videos:/app/sample_videos
+      - ./streaming:/app/streaming
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import os, sys; pids=[p for p in os.listdir('/proc') if p.isdigit()]; sys.exit(0 if len(pids) > 2 else 1)\""]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+      start_period: 5s
+
+volumes:
+  postgres_data:

@@ -213,7 +213,7 @@ If you do not have physical IP cameras available on your local network, start th
 python streaming/simulator.py
 ```
 
-1. In the Streamlit dashboard, click **"🧪 Add Simulated Test Camera"** on the Dashboard or add it manually:
+1. In the Streamlit dashboard, click **" Add Simulated Test Camera"** on the Dashboard or add it manually:
    - **Name**: `Simulated Camera 01`
    - **IP Address**: `127.0.0.1`
    - **RTSP URL**: `rtsp://localhost:8554/simulated_cam`
@@ -236,7 +236,7 @@ Go to the **Cameras** page and fill out the form:
    - **Axis**: `rtsp://root:password@192.168.1.90:554/axis-media/media.amp`
    - **TP-Link VIGI**: `rtsp://admin:password@192.168.1.120:554/stream1`
    - **Reolink**: `rtsp://admin:password@192.168.1.150:554/h264Preview_01_main`
-5. Click **"🔍 Test Connection First"** to probe the camera before saving.
+5. Click **" Test Connection First"** to probe the camera before saving.
 6. Click **"💾 Save Camera"**.
 
 
@@ -287,7 +287,7 @@ MediaMTX is an ultra-lightweight, zero-dependency RTSP, WebRTC, and HLS media se
 
 
 
-## 🔌 The Only Requirement
+##  The Only Requirement
 
 Your computer (the Docker host) must be on the **same local network** as the cameras. The typical setup is:
 

@@ -1,6 +1,6 @@
 # Argus Eye: Real-Time IP Surveillance Video Streaming Platform
 
-A lightweight, robust, and production-structured MVP for real-time CCTV surveillance/IP camera ingestion, multi-camera live grid monitoring, health tracking with automatic reconnection, and on-demand stream recording.
+A robust, and production-ready system for real-time CCTV surveillance/IP ingestion, multi-camera live grid monitoring, health tracking with automatic reconnection, and on-demand stream recording.
 
 Built with **Python 3.11+**, **Streamlit**, **MediaMTX**, **FFmpeg**, and **PostgreSQL**.
 
